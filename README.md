@@ -41,12 +41,12 @@ apps:
 pm2 start pm2.yml -- mq-deployer.yml
 ```
 
-##查看服务是否启动
+## 查看服务是否启动
 pm2 list
 
 ![a.png](a.png)
 
-## jenkins包构建完成后mq,与consumer对应
+## Jenkins包构建完成后部署mq，与consumer对应
 
 ```bash
     mq-deployer-send \
