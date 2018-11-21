@@ -1,0 +1,12 @@
+# mq-deployer consumer config
+uri: amqp://jenkins:jenkins@114.215.169.170:5672/%2F
+exchange: jenkins-v2
+tasks:
+  - name: alidw-fe
+    destination: /data
+    router: alidw.alidw-fe.stage
+  - name: ccms
+    destination: /data
+    router: alidw.ccms.stage
+
+
