@@ -6,7 +6,7 @@
 npm install -g pm2
 npm install -g mq-deployer
 ```
-## 配置mq和pm2
+## 配置mq-deployer.yml和pm2.yml文件
 
 ```bash
 # mq-deployer consumer config
@@ -24,7 +24,7 @@ tasks:
 
 
 ```bash
-# pm2
+# pm2.yml
 apps:
   - name: mq-deployer
     script: mq-deployer-start
@@ -36,7 +36,7 @@ apps:
 
 ```
 
-## 运行
+## 运行mq-deployer.yml,启动mq服务
 ```bash
 pm2 start pm2.yml -- mq-deployer.yml
 ```
@@ -46,3 +46,12 @@ pm2 list
 
 ![a.png](a.png)
 
+## jenkins包构建完成后mq,与consumer对应
+
+```bash
+    mq-deployer-send \
+    --uri amqp://admin:5IOdXo12V87F5aD4yiIGZd8R000oCuL6@localhost:5672/%2F \
+    --exchange text \
+    --router com.project-b \
+    "{\"packageUrl\": \"${package_url}\"}"
+```
