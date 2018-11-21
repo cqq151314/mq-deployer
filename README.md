@@ -1,4 +1,4 @@
-# mq-deployer 服务部署
+# mq-deployer consumer部署
 
 ## 安装
 
