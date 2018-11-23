@@ -1,27 +1,65 @@
-# mq-deployer consumer部署
+# mq-deployer部署
 
-## 安装
+## 在本地启动一个用于测试的 rabbitmq 服务
 
-```bash
-npm install -g pm2
-npm install -g mq-deployer
-```
-## 配置mq-deployer.yml和pm2.yml文件
+使用 [docker-compose](https://github.com/docker/compose) 启动 rabbitmq 服务
 
 ```bash
-# mq-deployer consumer config
-uri: amqp://admin:5IOdXo12V87F5aD4yiIGZd8R000oCuL6@localhost:5672/%2F
-exchange: test
-tasks:
-  - name: project-a
-    destination: /tmp/mq-deployer
-    router: com.project-a
-
-  - name: project-b
-    destination: /tmp/mq-deployer
-    router: com.project-b
+cd rabbitmq
+docker-compose up
 ```
 
+等待 rabbitmq 服务运行后，访问 <http://localhost:15672> 登录 rabbitmq 管理界面。帐号、密码可以从 `rabbitmq/docker-compose.yml` 中获得。
+
+在 rabbitmq 管理界面中可以查看 Connections, Channels, Exchanges, Queues 等信息。
+
+## mq-deployer
+
+### 安装 & 使用
+
+1. 安装
+
+	```bash
+	npm install -g mq-deployer
+	```
+
+2. 运行服务，监听 rabbitmq 服务端的消息
+
+	```bash
+	## 运行 config.sample.yml 中定义的服务队列，用于监听 rabbitmq 服务端的消息
+	mq-deployer start config.sample.yml
+	```
+
+3. 发送消息
+
+	```bash
+	## 向 rabbitmq 发送一个部署包消息并等待服务队列完成部署
+	## 消息内容为 JSON 字符串 { "packageUrl": ".../xxx.tar.gz" }
+	## 目前仅支持处理 tag.gz 包
+	mq-deployer send \
+	  --uri amqp://admin:5IOdXo12V87F5aD4yiIGZd8R000oCuL6@localhost:5672/%2F \
+	  --exchange test \
+	  --router com.project-a \
+	  "{\"packageUrl\": \".../xxx.tar.gz\"}"
+	```
+## 配置mq-deployer consumer
+
+1. 配置mq-deployer.yml
+
+	```bash
+	# mq-deployer consumer config
+    uri: amqp://admin:5IOdXo12V87F5aD4yiIGZd8R000oCuL6@localhost:5672/%2F
+    exchange: test
+    tasks:
+    - name: project-a
+        destination: /tmp/mq-deployer
+        router: com.project-a
+
+    - name: project-b
+        destination: /tmp/mq-deployer
+        router: com.project-b
+	```
+2、配置pm2.yml
 
 ```bash
 # pm2.yml
@@ -46,12 +84,4 @@ pm2 list
 
 ![a.png](a.png)
 
-## Jenkins包构建完成后部署mq，与consumer对应
-
-```bash
-    mq-deployer-send \
-    --uri amqp://admin:5IOdXo12V87F5aD4yiIGZd8R000oCuL6@localhost:5672/%2F \
-    --exchange text \
-    --router com.project-b \
-    "{\"packageUrl\": \"${package_url}\"}"
-```
+[参考资料](https://github.com/arzyu/mq-deployer)
