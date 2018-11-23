@@ -1,0 +1,12 @@
+# mq-deployer consumer config
+
+uri: amqp://admin:5IOdXo12V87F5aD4yiIGZd8R000oCuL6@localhost:5672/%2F
+exchange: test
+tasks:
+  - name: project-a
+    destination: /tmp/mq-deployer
+    router: com.project-a
+
+  - name: project-b
+    destination: /tmp/mq-deployer
+    router: com.project-b

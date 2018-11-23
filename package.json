@@ -1,0 +1,53 @@
+{
+  "name": "mq-deployer",
+  "version": "2.0.6",
+  "bin": {
+    "mq-deployer": "dist/mq-deployer.js",
+    "mq-deployer-start": "dist/mq-deployer-start.js",
+    "mq-deployer-send": "dist/mq-deployer-send.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "build": "node -r babel-register ./scripts/build.js",
+    "prepublish": "npm run lint && npm run build",
+    "start": "node -r babel-register ./bin/mq-deployer.js"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
+  },
+  "dependencies": {
+    "address": "^1.0.1",
+    "amqplib": "^0.5.1",
+    "babel-runtime": "^6.23.0",
+    "commander": "^2.9.0",
+    "fs-extra": "^2.1.2",
+    "js-yaml": "^3.8.3",
+    "request": "^2.81.0",
+    "tar": "^2.2.1",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-register": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-arzyu-nodejs": "^2.0.0",
+    "shelljs": "^0.7.7"
+  },
+  "eslintConfig": {
+    "extends": "arzyu-nodejs",
+    "rules": {
+      "no-console": "off"
+    }
+  },
+  "license": "MIT"
+}
