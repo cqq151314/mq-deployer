@@ -42,6 +42,9 @@ docker-compose up
 	  --router com.project-a \
 	  "{\"packageUrl\": \".../xxx.tar.gz\"}"
 	```
+
+    ![1.png](1.png)
+
 ## 配置mq-deployer consumer
 
 1. 配置mq-deployer.yml
@@ -60,14 +63,21 @@ docker-compose up
         router: com.project-b
 	```
 2、配置pm2.yml
+- 由于自身启动服务关闭窗口后服务也就关闭了,因此建议使用node进程启动服务，例如 pm2.
+
+```bash
+# 安装pm2
+
+npm install -g pm2
+
+```
 
 ```bash
 # pm2.yml
-apps:
-  - name: mq-deployer
-    script: mq-deployer-start
-    args: ./mq-deployer.yml
-    watch: .
+  - name: mq-deployer  // 应用名称
+    script: mq-deployer-start   // 实际启动脚本
+    args: ./config.sample.yml // 传递给脚本的参数组成的字符串或字符串数​​组。
+    watch: .  //监控变化的目录，一旦变化，自动重启
     merge_logs: true
     log_date_format: YYYY-MM-DD HH:mm Z
 
