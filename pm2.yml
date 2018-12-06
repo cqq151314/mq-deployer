@@ -1,7 +1,7 @@
 apps:
   - name: mq-deployer
     script: mq-deployer-start
-    args: ./mq-deployer.yml
+    args: ./config.sample.yml
     watch: .
     merge_logs: true
     log_date_format: YYYY-MM-DD HH:mm Z
